@@ -13,10 +13,10 @@ import java.io.OutputStream;
  */
 public class FastJsonSerialization implements Serialization {
     public ObjectInput deserialize(InputStream in) throws IOException {
-        return null;
+        return new FastJsonObjectInput(in);
     }
 
     public ObjectOutput serialize(OutputStream out) throws IOException {
-        return null;
+        return new FastJsonOutput(out);
     }
 }

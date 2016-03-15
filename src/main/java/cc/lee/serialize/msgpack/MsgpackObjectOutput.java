@@ -19,6 +19,6 @@ public class MsgpackObjectOutput implements ObjectOutput {
     }
 
     public void writeObject(Object obj) throws IOException {
-        messagePack.write(obj);
+        messagePack.write(out, obj);
     }
 }

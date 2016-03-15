@@ -1,8 +1,12 @@
 package cc.lee.serialize.test;
 
-import org.msgpack.MessagePack;
-import org.msgpack.template.Templates;
+import cc.lee.serialize.ObjectOutput;
+import cc.lee.serialize.Serialization;
+import cc.lee.serialize.java.JavaSerialization;
+import cc.lee.serialize.json.FastJsonSerialization;
 
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,26 +16,47 @@ import java.util.List;
 public class MsgpackTest {
 
     public static void main(String[] args) throws Exception {
-        List<String> src = new ArrayList<String>();
-        src.add("msgpack");
-        src.add("kumofs");
-        src.add("viver");
 
-        MessagePack msgpack = new MessagePack();
-// Serialize
-        byte[] raw = msgpack.write(src);
 
-// Deserialize directly using a template
-        List<String> dst1 = msgpack.read(raw, Templates.tList(Templates.TString));
-        System.out.println(dst1.get(0));
-        System.out.println(dst1.get(1));
-        System.out.println(dst1.get(2));
+        List<User> list = new ArrayList<User>();
+        list.add(new User("aaa", 11));
+        list.add(new User("bbbb", 12));
 
-// Or, Deserialze to Value then convert type.
-//        Value dynamic = msgpack.read(raw);
-//        List<String> dst2 = new Converter(dynamic).read(Templates.tList(Templates.TString));
-//        System.out.println(dst2.get(0));
-//        System.out.println(dst2.get(1));
-//        System.out.println(dst2.get(2));
+        Serialization serialization = new JavaSerialization();
+        File file = new File("/home/lizhitao/serailization");
+        OutputStream out = new FileOutputStream(file);
+        ObjectOutput objectOutput = serialization.serialize(out);
+        objectOutput.writeObject(list);
+
+        List<User> deList = (List<User>) serialization.deserialize(new FileInputStream(file)).readObject();
+        for (User de : deList)
+            System.out.println(de.getName() + ";" + de.getAge());
+    }
+}
+
+
+class User implements Serializable{
+    String name;
+    Integer age;
+
+    public User(String name, Integer age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 }
