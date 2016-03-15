@@ -9,9 +9,8 @@ import java.util.concurrent.ConcurrentMap;
  * Created by lizhitao on 16-3-15.
  */
 public class PojoUtil {
-    private static final ConcurrentMap<String, Method>  NAME_METHODS_CACHE = new ConcurrentHashMap<String, Method>();
-    private static final ConcurrentMap<Class<?>, ConcurrentMap<String, Field>> CLASS_FIELD_CACHE =
-            new ConcurrentHashMap<Class<?>, ConcurrentMap<String, Field>>();
+    private static final ConcurrentMap<String, Method> NAME_METHODS_CACHE = new ConcurrentHashMap<String, Method>();
+    private static final ConcurrentMap<Class<?>, ConcurrentMap<String, Field>> CLASS_FIELD_CACHE = new ConcurrentHashMap<Class<?>, ConcurrentMap<String, Field>>();
 
     public static Object realize(Object pojo, Class<?> type, Type genericType) {
         return realize0(pojo, type, genericType, new IdentityHashMap<Object, Object>());
@@ -295,12 +294,12 @@ public class PojoUtil {
     @SuppressWarnings("unchecked")
     private static Collection<Object> createCollection(Class<?> type, int len) {
         if (type.isAssignableFrom(ArrayList.class)) {
-            return  new ArrayList<Object>(len);
+            return new ArrayList<Object>(len);
         }
         if (type.isAssignableFrom(HashSet.class)) {
             return new HashSet<Object>(len);
         }
-        if (! type.isInterface() && ! Modifier.isAbstract(type.getModifiers())) {
+        if (!type.isInterface() && !Modifier.isAbstract(type.getModifiers())) {
             try {
                 return (Collection<Object>) type.newInstance();
             } catch (Exception e) {
@@ -332,7 +331,7 @@ public class PojoUtil {
             } else {
                 value = map.get(methodName.substring(0, 1).toLowerCase() + methodName.substring(1));
             }
-            if (value instanceof Map<?,?> && ! Map.class.isAssignableFrom(method.getReturnType())) {
+            if (value instanceof Map<?, ?> && !Map.class.isAssignableFrom(method.getReturnType())) {
                 value = realize0((Map<String, Object>) value, method.getReturnType(), null, new IdentityHashMap<Object, Object>());
             }
             return value;
@@ -341,15 +340,16 @@ public class PojoUtil {
 
     /**
      * 获取范型的类型
+     *
      * @param genericType
      * @param index
      * @return List<Person>  返回Person.class ,Map<String,Person> index=0 返回String.class index=1 返回Person.class
      */
-    private static Type getGenericClassByIndex(Type genericType, int index){
-        Type clazz = null ;
+    private static Type getGenericClassByIndex(Type genericType, int index) {
+        Type clazz = null;
         //范型参数转换
-        if (genericType instanceof ParameterizedType){
-            ParameterizedType t = (ParameterizedType)genericType;
+        if (genericType instanceof ParameterizedType) {
+            ParameterizedType t = (ParameterizedType) genericType;
             Type[] types = t.getActualTypeArguments();
             clazz = types[index];
         }
