@@ -25,6 +25,7 @@ public class MsgpackObjectInput implements ObjectInput {
 
     @SuppressWarnings("unchecked")
     public <T> T readObject(Class<T> clazz) throws IOException, ClassNotFoundException {
+        messagePack.register(clazz);
         return (T) readObject();
     }
 
