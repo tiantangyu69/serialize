@@ -2,12 +2,9 @@ package cc.lee.serialize.test;
 
 import cc.lee.serialize.ObjectOutput;
 import cc.lee.serialize.Serialization;
-import cc.lee.serialize.java.JavaSerialization;
-import cc.lee.serialize.json.FastJsonSerialization;
 import cc.lee.serialize.msgpack.MsgpackSerialization;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
